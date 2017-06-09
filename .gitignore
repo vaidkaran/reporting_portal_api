@@ -7,6 +7,10 @@
 # Ignore bundler config.
 /.bundle
 
+# Ignore all .swp files
+*.swp
+
+# Ignore bundler installed files
 vendor/bundle/
 
 # Ignore all logfiles and tempfiles.

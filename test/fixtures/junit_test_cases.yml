@@ -1,0 +1,35 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  junit_test_suite_id: 1
+  name: MyString
+  assertions: 1
+  classname: MyString
+  status: MyString
+  time: 1
+  skipped: 1
+  error_message: MyString
+  error_type: MyString
+  error_text: MyText
+  failure_message: MyString
+  failure_type: MyString
+  failure_text: MyText
+  system_out: MyText
+  system_err: MyText
+
+two:
+  junit_test_suite_id: 1
+  name: MyString
+  assertions: 1
+  classname: MyString
+  status: MyString
+  time: 1
+  skipped: 1
+  error_message: MyString
+  error_type: MyString
+  error_text: MyText
+  failure_message: MyString
+  failure_type: MyString
+  failure_text: MyText
+  system_out: MyText
+  system_err: MyText

@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   mount_devise_token_auth_for 'OrganisationalUser', at: 'organisation_auth'
 
+  post 'upload/junit', to: 'upload#junit', as: 'upload_junit'
+
   mount_devise_token_auth_for 'User', at: 'auth'
   as :user do
     # Define routes for User within this block.

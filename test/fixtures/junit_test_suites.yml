@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  junit_test_suite_group_id: 1
+  name: MyString
+  tests: 1
+  disabled: 1
+  _errors: 1
+  failures: 1
+  hostname: MyString
+  testsuiteid: 1
+  package: MyString
+  skipped: 1
+  time: 1
+  timestamp: MyString
+  system_out: MyText
+  system_err: MyText
+
+two:
+  junit_test_suite_group_id: 1
+  name: MyString
+  tests: 1
+  disabled: 1
+  _errors: 1
+  failures: 1
+  hostname: MyString
+  testsuiteid: 1
+  package: MyString
+  skipped: 1
+  time: 1
+  timestamp: MyString
+  system_out: MyText
+  system_err: MyText

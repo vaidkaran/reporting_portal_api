@@ -10,7 +10,65 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170607051919) do
+ActiveRecord::Schema.define(version: 20170611053534) do
+
+  create_table "junit_test_cases", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "junit_test_suite_id"
+    t.string   "name"
+    t.integer  "assertions"
+    t.string   "classname"
+    t.string   "status"
+    t.integer  "time"
+    t.integer  "skipped"
+    t.string   "error_message"
+    t.string   "error_type"
+    t.text     "error_text",          limit: 65535
+    t.string   "failure_message"
+    t.string   "failure_type"
+    t.text     "failure_text",        limit: 65535
+    t.text     "system_out",          limit: 65535
+    t.text     "system_err",          limit: 65535
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+  end
+
+  create_table "junit_test_suite_groups", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "report_id"
+    t.string   "name"
+    t.integer  "_errors"
+    t.integer  "tests"
+    t.integer  "failures"
+    t.integer  "time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "junit_test_suite_properties", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "junit_test_suite_id"
+    t.string   "name"
+    t.string   "value"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  create_table "junit_test_suites", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "junit_test_suite_group_id"
+    t.string   "name"
+    t.integer  "tests"
+    t.integer  "disabled"
+    t.integer  "_errors"
+    t.integer  "failures"
+    t.string   "hostname"
+    t.integer  "testsuiteid"
+    t.string   "package"
+    t.integer  "skipped"
+    t.integer  "time"
+    t.string   "timestamp"
+    t.text     "system_out",                limit: 65535
+    t.text     "system_err",                limit: 65535
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+  end
 
   create_table "organisational_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "provider",                             default: "email", null: false
@@ -59,6 +117,21 @@ ActiveRecord::Schema.define(version: 20170607051919) do
     t.string   "name"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
+  end
+
+  create_table "reports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "test_category_id"
+    t.string   "_type"
+    t.string   "format"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  create_table "test_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "project_id"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

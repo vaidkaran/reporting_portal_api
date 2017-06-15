@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  report_id: 1
+  suites: 1
+  tests: 1
+  passes: 1
+  failures: 1
+  start: MyString
+  end: MyString
+  duration: 1
+
+two:
+  report_id: 1
+  suites: 1
+  tests: 1
+  passes: 1
+  failures: 1
+  start: MyString
+  end: MyString
+  duration: 1

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170611053534) do
+ActiveRecord::Schema.define(version: 20170615095101) do
 
   create_table "junit_test_cases", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "junit_test_suite_id"
@@ -68,6 +68,46 @@ ActiveRecord::Schema.define(version: 20170611053534) do
     t.text     "system_err",                limit: 65535
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
+  end
+
+  create_table "mocha_failures", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "report_id"
+    t.text     "title",      limit: 65535
+    t.text     "fullTitle",  limit: 65535
+    t.integer  "duration"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "mocha_passes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "report_id"
+    t.text     "title",      limit: 65535
+    t.text     "fullTitle",  limit: 65535
+    t.integer  "duration"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  create_table "mocha_stats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "report_id"
+    t.integer  "suites"
+    t.integer  "tests"
+    t.integer  "passes"
+    t.integer  "failures"
+    t.string   "start"
+    t.string   "end"
+    t.integer  "duration"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "mocha_tests", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "report_id"
+    t.text     "title",      limit: 65535
+    t.text     "fullTitle",  limit: 65535
+    t.integer  "duration"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "organisational_users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

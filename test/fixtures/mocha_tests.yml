@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  report_id: 1
+  title: MyString
+  full_title: MyString
+  duration: 1
+
+two:
+  report_id: 1
+  title: MyString
+  full_title: MyString
+  duration: 1

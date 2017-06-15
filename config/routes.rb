@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   mount_devise_token_auth_for 'OrganisationalUser', at: 'organisation_auth'
 
   post 'upload/junit', to: 'upload#junit', as: 'upload_junit'
+  post 'upload/mocha', to: 'upload#mocha', as: 'upload_mocha'
 
   resources :reports, only: [:show]
 

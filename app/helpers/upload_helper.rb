@@ -1,4 +1,41 @@
 module UploadHelper
+
+  # Returns a report object. Returns nil is something goes wrong.
+  def save_report
+    # Check if project and test_category are passed correctly
+    project = current_user.projects.find_by(name: params[:project_name].strip)
+    unless(project)
+      render project_not_found_json and return(nil)
+    end
+    test_category = project.test_categories.find_by(name: params[:test_category].strip)
+    unless test_category
+      render test_category_not_found_json and return(nil)
+    end
+
+    report = test_category.reports.new(_type: params[:report_type].strip, format: params[:report_format].strip)
+    unless report.save
+      render failure_json and return(nil)
+    end
+
+    return report
+  end
+
+  def success_json
+    {json: {success: 'true', message: 'Report successfully uploaded'}}
+  end
+
+  def failure_json
+    {json: {success: 'false', message: 'Report could not be uploaded'}}
+  end
+
+  def project_not_found_json
+    {json: {success: 'false', message: 'Project not found. Make sure you\'re passing the correct project name'}}
+  end
+
+  def test_category_not_found_json
+    {json: {success: 'false', message: 'Test category not found for the specified project name. Make sure you\'re passing the correct test category name'}}
+  end
+
   # Format of the hash returned by parse_junit_xml
   #
   # {junit_test_suite_group:
@@ -82,5 +119,7 @@ module UploadHelper
 
     return report
   end
+
+
 end
 

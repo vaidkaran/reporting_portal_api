@@ -25,15 +25,15 @@ module UploadHelper
   end
 
   def failure_json
-    {json: {success: 'false', message: 'Report could not be uploaded'}}
+    {json: {success: 'false', message: 'Report could not be uploaded', error: 'Something went wrong'}}
   end
 
   def project_not_found_json
-    {json: {success: 'false', message: 'Project not found. Make sure you\'re passing the correct project name'}}
+    {json: {success: 'false', message: 'Report could not be uploaded', error: 'Project not found. Make sure you\'re passing the correct project name'}}
   end
 
   def test_category_not_found_json
-    {json: {success: 'false', message: 'Test category not found for the specified project name. Make sure you\'re passing the correct test category name'}}
+    {json: {success: 'false', message: 'Report could not be uploaded', error: 'Test category not found for the specified project name. Make sure you\'re passing the correct test category name'}}
   end
 
   # Format of the hash returned by parse_junit_xml

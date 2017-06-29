@@ -1,4 +1,4 @@
-class OrganisationalUser < ActiveRecord::Base
+class OrgUser < ActiveRecord::Base
 
   # Include default devise modules.
   devise :database_authenticatable, :registerable,
@@ -6,6 +6,6 @@ class OrganisationalUser < ActiveRecord::Base
           :omniauthable
   include DeviseTokenAuth::Concerns::User
 
-  belongs_to :organisation, optional: true
+  belongs_to :organisation
   has_and_belongs_to_many :projects
 end

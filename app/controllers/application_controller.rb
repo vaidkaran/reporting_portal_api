@@ -15,6 +15,10 @@ class ApplicationController < ActionController::API
   end
 
   def resource_class_org_user?
-    resource_class == OrgUser
+    if devise_controller?
+      resource_class == OrgUser
+    else
+      return false
+    end
   end
 end

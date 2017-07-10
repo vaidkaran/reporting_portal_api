@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   post 'superadmin_settings/create_superadmin', to: 'superadmin_settings#create_superadmin', as: 'create_superadmin'
   post 'superadmin_settings/destroy_superadmin', to: 'superadmin_settings#destroy_superadmin', as: 'destroy_superadmin'
 
-  resources :organisations
+  resources :organisations, except: [:new]
   resources :reports, only: [:show]
 
   mount_devise_token_auth_for 'User', at: 'auth'

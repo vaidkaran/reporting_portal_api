@@ -148,7 +148,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  byebug
   devise_token_auth
   listen (~> 3.0.5)
   mysql2 (>= 0.3.18, < 0.5)

@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   mount_devise_token_auth_for 'OrgUser', at: 'org_auth'
+  #mount_devise_token_auth_for 'OrgUser', at: 'org_auth', controllers: {
+  #  registrations: 'org_users/registrations'
+  #}
+
 
   post 'upload/junit', to: 'upload#junit', as: 'upload_junit'
   post 'upload/mocha', to: 'upload#mocha', as: 'upload_mocha'

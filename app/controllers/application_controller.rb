@@ -18,7 +18,7 @@ class ApplicationController < ActionController::API
   # Allow special access to superadmin and admin
   # Permit params accordingly
   def check_for_superadmin_and_admin
-    return if(resource_class==OrgUser and request[:controller]=='devise_token_auth/sessions' and request[:action]=='create')
+    return if(resource_class==OrgUser and request[:controller]==('devise_token_auth/sessions'||'devise_token_auth/token_validations') and request[:action]==('create'||'validate_token'))
 
     devise_parameter_sanitizer.permit(:sign_up, keys: [:organisation_id])
     devise_parameter_sanitizer.permit(:account_update, keys: [:organisation_id])

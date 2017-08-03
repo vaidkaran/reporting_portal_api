@@ -28,6 +28,7 @@ gem 'puma', '~> 3.0'
 
 group :development, :test do
   gem 'pry-byebug'
+  gem 'rails-erd'
 end
 
 group :development do

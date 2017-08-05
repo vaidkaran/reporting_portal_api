@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
   resources :organisations, except: [:new]
   resources :reports, only: [:show]
+  resources :projects, except: [:new]
+  resources :test_categories, except: [:new]
 
   mount_devise_token_auth_for 'User', at: 'auth'
   as :user do

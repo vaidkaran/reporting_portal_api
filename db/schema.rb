@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170629185420) do
+ActiveRecord::Schema.define(version: 20170805094806) do
 
   create_table "junit_test_cases", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "junit_test_suite_id"
@@ -141,9 +141,9 @@ ActiveRecord::Schema.define(version: 20170629185420) do
     t.index ["uid", "provider"], name: "index_org_users_on_uid_and_provider", unique: true, using: :btree
   end
 
-  create_table "organisational_users_projects", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "organisational_user_id", null: false
-    t.integer "project_id",             null: false
+  create_table "org_users_projects", id: false, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer "org_user_id", null: false
+    t.integer "project_id",  null: false
   end
 
   create_table "organisations", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

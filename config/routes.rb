@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   post 'superadmin_settings/destroy_superadmin', to: 'superadmin_settings#destroy_superadmin', as: 'destroy_superadmin'
 
   resources :organisations, except: [:new]
-  resources :reports, only: [:show]
+  resources :reports, only: [:show, :index]
   resources :projects, except: [:new]
   resources :test_categories, except: [:new]
 

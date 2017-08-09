@@ -3,7 +3,18 @@ module UploadHelper
   # Returns a report object. Returns nil is something goes wrong.
   def save_report
     # Check if project and test_category are passed correctly
-    project = current_user.projects.find_by(name: params[:project_name].strip)
+    if current_user
+      project = current_user.projects.find_by(name: params[:project_name].strip)
+    elsif current_org_user
+      if current_org_user.admin
+        project = current_org_user.organisation.projects.find_by(name: params[:project_name].strip)
+      else
+        project = current_org_user.projects.find_by(name: params[:project_name].strip)
+      end
+    else
+      return nil
+    end
+
     unless(project)
       render project_not_found_json and return(nil)
     end

@@ -1,5 +1,4 @@
 class ReportsController < ApplicationController
-  before_action :authenticate_user!
 
   def index
     test_category = TestCategory.find(params[:test_category_id])

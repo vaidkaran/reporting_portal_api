@@ -1,6 +1,6 @@
 class UploadController < ApplicationController
   include UploadHelper
-  before_action :authenticate_user!
+  before_action :ensure_authenticated
   before_action -> { save_report.nil? ? return : @report=save_report}
 
   def mocha

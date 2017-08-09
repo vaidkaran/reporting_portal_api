@@ -1,4 +1,6 @@
 class TestCategoriesController < ApplicationController
+  # Make sure to handle authentication inside the action methods
+
   def index
     if current_user
       project = current_user.projects.find(project_id)

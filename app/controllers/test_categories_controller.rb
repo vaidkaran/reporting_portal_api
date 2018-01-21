@@ -48,7 +48,7 @@ class TestCategoriesController < ApplicationController
 
   private
   def test_category_params
-    params.permit :name
+    params.permit :name, :report_type, :report_format
   end
 
   def project_id

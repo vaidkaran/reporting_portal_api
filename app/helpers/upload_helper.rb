@@ -23,7 +23,7 @@ module UploadHelper
       render test_category_not_found_json and return(nil)
     end
 
-    report = test_category.reports.new(_type: params[:report_type].strip, format: params[:report_format].strip)
+    report = test_category.reports.new
     unless report.save
       render failure_json and return(nil)
     end

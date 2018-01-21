@@ -36,13 +36,13 @@ class ReportsController < ApplicationController
 
   private
   def report_json(report)
-    if report._type == 'junit'
+    if report.test_category.report_type == 'junit'
       return {json: report,
         include: {junit_test_suite_group:
         {include: {junit_test_suites:
         {include: [:junit_test_suite_properties, :junit_test_cases]}
         }}}}
-    elsif report._type == 'mocha'
+    elsif report.test_category.report_type == 'mocha'
       return {json: report, include: [:mocha_stat, :mocha_tests, :mocha_passes, :mocha_failures]}
     else
       return nil

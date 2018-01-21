@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170805094806) do
+ActiveRecord::Schema.define(version: 20180121072944) do
 
   create_table "junit_test_cases", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "junit_test_suite_id"
@@ -162,8 +162,6 @@ ActiveRecord::Schema.define(version: 20170805094806) do
 
   create_table "reports", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "test_category_id"
-    t.string   "_type"
-    t.string   "format"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
   end
@@ -171,8 +169,10 @@ ActiveRecord::Schema.define(version: 20170805094806) do
   create_table "test_categories", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "project_id"
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.string   "report_type"
+    t.string   "report_format"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

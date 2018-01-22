@@ -1,15 +1,20 @@
 module UploadHelper
 
-  # Returns a report object. Returns nil is something goes wrong.
+  # Sets @report. Returns nil is something goes wrong.
   def save_report
-    # Check if project and test_category are passed correctly
+    # test_category_id to be passed in params
+    test_category = TestCategory.find(params[:test_category_id])
+    unless test_category
+      render test_category_not_found_json and return(nil)
+    end
+
     if current_user
-      project = current_user.projects.find_by(name: params[:project_name].strip)
+      project = current_user.projects.find(TestCategory.find(params[:test_category_id]).project_id)
     elsif current_org_user
       if current_org_user.admin
-        project = current_org_user.organisation.projects.find_by(name: params[:project_name].strip)
+        project = current_org_user.organisation.projects.find_by(TestCategory.find(params[:test_category_id]).project_id)
       else
-        project = current_org_user.projects.find_by(name: params[:project_name].strip)
+        project = current_org_user.projects.find_by(TestCategory.find(params[:test_category_id]).project_id)
       end
     else
       return nil
@@ -18,17 +23,13 @@ module UploadHelper
     unless(project)
       render project_not_found_json and return(nil)
     end
-    test_category = project.test_categories.find_by(name: params[:test_category].strip)
-    unless test_category
-      render test_category_not_found_json and return(nil)
-    end
 
     report = test_category.reports.new
     unless report.save
       render failure_json and return(nil)
     end
 
-    return report
+    @report = report
   end
 
   def success_json
@@ -40,11 +41,11 @@ module UploadHelper
   end
 
   def project_not_found_json
-    {json: {success: 'false', message: 'Report could not be uploaded', error: 'Project not found. Make sure you\'re passing the correct project name'}}
+    {json: {success: 'false', message: 'Report could not be uploaded', error: 'Project not found. Make sure you\'re passing the correct test_category_id'}}
   end
 
   def test_category_not_found_json
-    {json: {success: 'false', message: 'Report could not be uploaded', error: 'Test category not found for the specified project name. Make sure you\'re passing the correct test category name'}}
+    {json: {success: 'false', message: 'Report could not be uploaded', error: 'Test category not found'}}
   end
 
   # Format of the hash returned by parse_junit_xml

@@ -181,13 +181,13 @@ module UploadHelper
         temp_test[:params][:started_at] = testng_test.attr('started_at')
         temp_test[:params][:finished_at] = testng_test.attr('finished_at')
 
-        temp_test[:testng_class] = []
+        temp_test[:testng_classes] = []
         testng_test.xpath('./class').each do |testng_class|
           temp_class = {}
           temp_class[:params] = {}
           temp_class[:params][:name] = testng_class.attr('name')
 
-          temp_class[:testng_test_method] = []
+          temp_class[:testng_test_methods] = []
           testng_class.xpath('./test-method').each do |testng_test_method|
             temp_test_method = {}
             temp_test_method[:params] = {}
@@ -212,18 +212,19 @@ module UploadHelper
               temp_test_method[:testng_test_method_params] << temp_test_params
             end
 
-            temp_test_method[:testng_test_method_exception] = []
-            testng_test_method.xpath('./exception').each do |test_method_exception|
+            if testng_test_method.xpath('./exception').length != 0
+              temp_test_method[:testng_test_method_exception] = {}
+              test_method_exception = testng_test_method.xpath('./exception')
               temp_test_exception = {}
               temp_test_exception[:params] = {}
               temp_test_exception[:params][:class] = test_method_exception.attr('class')
               temp_test_exception[:params][:message] = test_method_exception.xpath('./message').text
               temp_test_exception[:params][:full_stacktrace] = test_method_exception.xpath('./full_stacktrace').text
-              temp_test_method[:testng_test_method_exception] << temp_test_exception
+              temp_test_method[:testng_test_method_exception] = temp_test_exception
             end
-            temp_class[:testng_test_method] << temp_test_method
+            temp_class[:testng_test_methods] << temp_test_method
           end
-          temp_test[:testng_class] << temp_class
+          temp_test[:testng_classes] << temp_class
         end
         temp_testsuite[:testng_tests] << temp_test
       end

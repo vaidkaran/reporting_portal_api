@@ -132,6 +132,114 @@ module UploadHelper
     return report
   end
 
+  def parse_testng_xml(f)
+    report = {}
+    report[:testng_results] = {}
+    report[:testng_results][:params] = {}
+    report[:testng_results][:testng_suites] = []
+
+    doc = Nokogiri::XML(f)
+    testng_results = doc.xpath('/testng-results').first
+    report[:testng_results][:params][:skipped] = testng_results.attr('skipped').to_i
+    report[:testng_results][:params][:failed] = testng_results.attr('failed').to_i
+    report[:testng_results][:params][:ignored] = testng_results.attr('ignored').to_i
+    report[:testng_results][:params][:passed] = testng_results.attr('passed').to_i
+    report[:testng_results][:params][:reporter_output] = testng_results.xpath('./reporter-output').text
+
+    testng_results.xpath('./suite').each do |testng_suite|
+      temp_testsuite = {}
+      temp_testsuite[:params] = {}
+      temp_testsuite[:params][:name] = testng_suite.attr('name')
+      temp_testsuite[:params][:duration_ms] = testng_suite.attr('duration-ms').to_i
+      temp_testsuite[:params][:started_at] = testng_suite.attr('started-at')
+      temp_testsuite[:params][:finished_at] = testng_suite.attr('finished-at')
+
+      temp_testsuite[:testng_groups] = []
+      testng_suite.xpath('./groups/group').each do |testng_group|
+        temp_group = {}
+        temp_group[:params] = {}
+        temp_group[:params][:name] = testng_group.attr('name')
+
+        temp_group[:testng_methods] = []
+        testng_group.xpath('./method').each do |testng_method|
+          temp_method = {}
+          temp_method[:params] = {}
+          temp_method[:params][:signature] = testng_method.attr('signature')
+          temp_method[:params][:name] = testng_method.attr('name')
+          temp_method[:params][:class] = testng_method.attr('class')
+          temp_group[:testng_methods] << temp_method
+        end
+        temp_testsuite[:testng_groups] << temp_group
+      end
+
+      temp_testsuite[:testng_tests] = []
+      testng_suite.xpath('./test').each do |testng_test|
+        temp_test = {}
+        temp_test[:params] = {}
+        temp_test[:params][:name] = testng_test.attr('name')
+        temp_test[:params][:duration_ms] = testng_test.attr('duration-ms')
+        temp_test[:params][:started_at] = testng_test.attr('started_at')
+        temp_test[:params][:finished_at] = testng_test.attr('finished_at')
+
+        temp_test[:testng_class] = []
+        testng_test.xpath('./class').each do |testng_class|
+          temp_class = {}
+          temp_class[:params] = {}
+          temp_class[:params][:name] = testng_class.attr('name')
+
+          temp_class[:testng_test_method] = []
+          testng_class.xpath('./test-method').each do |testng_test_method|
+            temp_test_method = {}
+            temp_test_method[:params] = {}
+            temp_test_method[:params][:status] = testng_test_method.attr('status')
+            temp_test_method[:params][:signature] = testng_test_method.attr('signature')
+            temp_test_method[:params][:test_instance_name] = testng_test_method.attr('test-instance-name')
+            temp_test_method[:params][:name] = testng_test_method.attr('name')
+            temp_test_method[:params][:is_config] = testng_test_method.attr('is-config')
+            temp_test_method[:params][:duration_ms] = testng_test_method.attr('duration-ms')
+            temp_test_method[:params][:started_at] = testng_test_method.attr('started-at')
+            temp_test_method[:params][:finished_at] = testng_test_method.attr('finished-at')
+            temp_test_method[:params][:data_provider] = testng_test_method.attr('data-provider')
+            temp_test_method[:params][:description] = testng_test_method.attr('description')
+            temp_test_method[:params][:reporter_output] = testng_test_method.attr('reporter-output')
+
+            temp_test_method[:testng_test_method_params] = []
+            testng_test_method.xpath('./params/param').each do |test_method_param|
+              temp_test_params = {}
+              temp_test_params[:params] = {}
+              temp_test_params[:params][:index] = test_method_param.attr('index')
+              temp_test_params[:params][:value] = test_method_param.xpath('./value').text
+              temp_test_method[:testng_test_method_params] << temp_test_params
+            end
+
+            temp_test_method[:testng_test_method_exception] = []
+            testng_test_method.xpath('./exception').each do |test_method_exception|
+              temp_test_exception = {}
+              temp_test_exception[:params] = {}
+              temp_test_exception[:params][:class] = test_method_exception.attr('class')
+              temp_test_exception[:params][:message] = test_method_exception.xpath('./message').text
+              temp_test_exception[:params][:full_stacktrace] = test_method_exception.xpath('./full_stacktrace').text
+              temp_test_method[:testng_test_method_exception] << temp_test_exception
+            end
+            temp_class[:testng_test_method] << temp_test_method
+          end
+          temp_test[:testng_class] << temp_class
+        end
+        temp_testsuite[:testng_tests] << temp_test
+      end
+      report[:testng_results][:testng_suites] << temp_testsuite
+    end
+
+    reportfile = File.new('hello', 'w+')
+    reportfile.puts(report)
+    reportfile.close
+
+
+    require 'pry'; binding.pry
+
+    puts 'hi'
+  end
+
 
 end
 

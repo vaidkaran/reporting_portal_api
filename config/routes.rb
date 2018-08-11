@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   post 'upload/junit', to: 'upload#junit', as: 'upload_junit'
   post 'upload/mocha', to: 'upload#mocha', as: 'upload_mocha'
+  post 'upload/testng', to: 'upload#testng', as: 'upload_testng'
 
   post 'superadmin_settings/create_superadmin', to: 'superadmin_settings#create_superadmin', as: 'create_superadmin'
   post 'superadmin_settings/destroy_superadmin', to: 'superadmin_settings#destroy_superadmin', as: 'destroy_superadmin'

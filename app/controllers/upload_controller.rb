@@ -96,6 +96,11 @@ class UploadController < ApplicationController
       render(failure_json) and return
     end
   end
+
+  def testng
+    file = params[:upload].tempfile
+    report_data = parse_testng_xml(file)
+  end
 end
 
 

@@ -166,7 +166,7 @@ module UploadHelper
           temp_method[:params] = {}
           temp_method[:params][:signature] = testng_method.attr('signature')
           temp_method[:params][:name] = testng_method.attr('name')
-          temp_method[:params][:class] = testng_method.attr('class')
+          temp_method[:params][:_class] = testng_method.attr('class')
           temp_group[:testng_methods] << temp_method
         end
         temp_testsuite[:testng_groups] << temp_group
@@ -177,7 +177,7 @@ module UploadHelper
         temp_test = {}
         temp_test[:params] = {}
         temp_test[:params][:name] = testng_test.attr('name')
-        temp_test[:params][:duration_ms] = testng_test.attr('duration-ms')
+        temp_test[:params][:duration_ms] = testng_test.attr('duration-ms').to_i
         temp_test[:params][:started_at] = testng_test.attr('started_at')
         temp_test[:params][:finished_at] = testng_test.attr('finished_at')
 
@@ -196,7 +196,7 @@ module UploadHelper
             temp_test_method[:params][:test_instance_name] = testng_test_method.attr('test-instance-name')
             temp_test_method[:params][:name] = testng_test_method.attr('name')
             temp_test_method[:params][:is_config] = testng_test_method.attr('is-config')
-            temp_test_method[:params][:duration_ms] = testng_test_method.attr('duration-ms')
+            temp_test_method[:params][:duration_ms] = testng_test_method.attr('duration-ms').to_i
             temp_test_method[:params][:started_at] = testng_test_method.attr('started-at')
             temp_test_method[:params][:finished_at] = testng_test_method.attr('finished-at')
             temp_test_method[:params][:data_provider] = testng_test_method.attr('data-provider')
@@ -207,7 +207,7 @@ module UploadHelper
             testng_test_method.xpath('./params/param').each do |test_method_param|
               temp_test_params = {}
               temp_test_params[:params] = {}
-              temp_test_params[:params][:index] = test_method_param.attr('index')
+              temp_test_params[:params][:index] = test_method_param.attr('index').to_i
               temp_test_params[:params][:value] = test_method_param.xpath('./value').text
               temp_test_method[:testng_test_method_params] << temp_test_params
             end
@@ -217,7 +217,7 @@ module UploadHelper
               test_method_exception = testng_test_method.xpath('./exception')
               temp_test_exception = {}
               temp_test_exception[:params] = {}
-              temp_test_exception[:params][:class] = test_method_exception.attr('class')
+              temp_test_exception[:params][:_class] = test_method_exception.attr('class')
               temp_test_exception[:params][:message] = test_method_exception.xpath('./message').text
               temp_test_exception[:params][:full_stacktrace] = test_method_exception.xpath('./full_stacktrace').text
               temp_test_method[:testng_test_method_exception] = temp_test_exception
@@ -230,15 +230,12 @@ module UploadHelper
       end
       report[:testng_results][:testng_suites] << temp_testsuite
     end
+    return report
 
-    reportfile = File.new('hello', 'w+')
-    reportfile.puts(report)
-    reportfile.close
+    #reportfile = File.new('hello', 'w+')
+    #reportfile.puts(report)
+    #reportfile.close
 
-
-    require 'pry'; binding.pry
-
-    puts 'hi'
   end
 
 

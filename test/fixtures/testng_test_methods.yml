@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  testng_class_id: 1
+  status: false
+  signature: MyString
+  test_instance_name: MyString
+  name: MyString
+  is_config: false
+  duration_ms: 1
+  started_at: 2018-08-13 11:39:10
+  finished_at: 2018-08-13 11:39:10
+  data_provider: MyText
+  description: MyText
+  reporter_output: MyText
+
+two:
+  testng_class_id: 1
+  status: false
+  signature: MyString
+  test_instance_name: MyString
+  name: MyString
+  is_config: false
+  duration_ms: 1
+  started_at: 2018-08-13 11:39:10
+  finished_at: 2018-08-13 11:39:10
+  data_provider: MyText
+  description: MyText
+  reporter_output: MyText

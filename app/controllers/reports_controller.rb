@@ -42,6 +42,17 @@ class ReportsController < ApplicationController
         {include: {junit_test_suites:
         {include: [:junit_test_suite_properties, :junit_test_cases]}
         }}}}
+    elsif report.test_category.report_type == 'testng'
+      #require 'pry'; binding.pry
+      return {json: report,
+              include: {testng_result:
+                       {include: {testng_suites:
+                                 {include: [{testng_groups:
+                                            {include: :testng_methods}},
+                                            {testng_tests:
+                                            {include: {testng_classes:
+                                            {include: {testng_test_methods:
+                                            {include: [:testng_test_method_exception, :testng_test_method_params]}}}}}}]}}}}}
     elsif report.test_category.report_type == 'mocha'
       return {json: report, include: [:mocha_stat, :mocha_tests, :mocha_passes, :mocha_failures]}
     else
@@ -51,5 +62,9 @@ class ReportsController < ApplicationController
 
   def all_reports_json(test_category)
     return {json: test_category.reports}
+  end
+
+  def unauthorized_json
+    {json: {"errors":["You need to sign in or sign up before continuing."]}, code: 401}
   end
 end

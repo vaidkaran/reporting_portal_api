@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180121072944) do
+ActiveRecord::Schema.define(version: 20180813060935) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -176,6 +176,94 @@ ActiveRecord::Schema.define(version: 20180121072944) do
     t.datetime "updated_at", null: false
     t.string "report_type"
     t.string "report_format"
+  end
+
+  create_table "testng_classes", force: :cascade do |t|
+    t.integer "testng_test_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "testng_groups", force: :cascade do |t|
+    t.integer "testng_suite_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "testng_methods", force: :cascade do |t|
+    t.string "testng_group_id"
+    t.string "signature"
+    t.string "name"
+    t.string "_class"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "testng_results", force: :cascade do |t|
+    t.integer "report_id"
+    t.integer "skipped"
+    t.integer "failed"
+    t.integer "ignored"
+    t.integer "passed"
+    t.text "reporter_output"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "testng_suites", force: :cascade do |t|
+    t.integer "testng_result_id"
+    t.string "name"
+    t.integer "duration_ms"
+    t.datetime "started_at"
+    t.datetime "finished_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "testng_test_method_exceptions", force: :cascade do |t|
+    t.integer "testng_test_method_id"
+    t.string "_class"
+    t.text "message"
+    t.text "full_stacktrace"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "testng_test_method_params", force: :cascade do |t|
+    t.integer "testng_test_method_id"
+    t.integer "index"
+    t.text "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "testng_test_methods", force: :cascade do |t|
+    t.integer "testng_class_id"
+    t.boolean "status"
+    t.string "signature"
+    t.string "test_instance_name"
+    t.string "name"
+    t.boolean "is_config"
+    t.integer "duration_ms"
+    t.datetime "started_at"
+    t.datetime "finished_at"
+    t.text "data_provider"
+    t.text "description"
+    t.text "reporter_output"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "testng_tests", force: :cascade do |t|
+    t.integer "testng_suite_id"
+    t.string "name"
+    t.integer "duration_ms"
+    t.datetime "started_at"
+    t.datetime "finished_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", id: :serial, force: :cascade do |t|

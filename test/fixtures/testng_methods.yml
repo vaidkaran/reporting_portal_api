@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  testng_group_id: MyString
+  signature: MyString
+  name: MyString
+  _class: MyString
+
+two:
+  testng_group_id: MyString
+  signature: MyString
+  name: MyString
+  _class: MyString

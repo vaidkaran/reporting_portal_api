@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  testng_test_method_id: 1
+  _class: MyString
+  message: MyText
+  full_stacktrace: MyText
+
+two:
+  testng_test_method_id: 1
+  _class: MyString
+  message: MyText
+  full_stacktrace: MyText

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  testng_suite_id: 1
+  name: MyString
+  duration_ms: 1
+  started_at: 2018-08-13 11:38:55
+  finished_at: 2018-08-13 11:38:55
+
+two:
+  testng_suite_id: 1
+  name: MyString
+  duration_ms: 1
+  started_at: 2018-08-13 11:38:55
+  finished_at: 2018-08-13 11:38:55

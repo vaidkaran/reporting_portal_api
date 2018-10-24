@@ -36,6 +36,7 @@ class ReportsController < ApplicationController
 
   private
   def report_json(report)
+    # TODO: Make the code simpler and easy to understand
     if report.test_category.report_type == 'junit'
       return {json: report,
         include: {junit_test_suite_group:

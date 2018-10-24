@@ -24,6 +24,20 @@ class TestCategoriesController < ApplicationController
     end
   end
 
+  # Only implemented and tested for independent users
+  def show
+    if TestCategory.where(id: params[:id]).present?
+      tc = TestCategory.find(params[:id])
+      if (current_user && current_user==tc.project.user)
+        render json: tc
+      else
+        render unauthorized_json and return
+      end
+    else
+      render test_category_not_found_json
+    end
+  end
+
   def create
     if current_user
       project = current_user.projects.find(project_id)
@@ -57,5 +71,9 @@ class TestCategoriesController < ApplicationController
 
   def unauthorized_json
     {json: {"errors":["You need to sign in or sign up before continuing."]}, code: 401}
+  end
+
+  def test_category_not_found_json
+    {json: {"errors":["Test category not found"]}, code: 404}
   end
 end

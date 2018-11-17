@@ -51,49 +51,19 @@ class UploadController < ApplicationController
   end
 
   def junit
-    begin
-      file = params[:upload].tempfile
-      report_data = parse_junit_xml(file)
+    # flag to make sure tsg is created only once even for multiple files
+    @create_junit_tsg = true
+    failure_flag = false
 
-      junit_tsg = JunitTestSuiteGroup.new(report_data[:junit_test_suite_group][:params])
-      @report.junit_test_suite_group = junit_tsg
-      if junit_tsg.save # Save junit_test_suite_group in db. Proceed only if it succeeds
-
-        report_data[:junit_test_suite_group][:junit_test_suites].each do |testsuite| # Iterate through all the test_suites
-          junit_ts = junit_tsg.junit_test_suites.new(testsuite[:params])
-          if junit_ts.save # Save junit_test_suite in db. Proceed only if it succeeds
-
-            testsuite[:junit_test_suite_properties].each do |property| # Iterate through all the test_suite_properties
-              junit_ts_prop = junit_ts.junit_test_suite_properties.new(property[:params])
-              unless junit_ts_prop.save # Save junit_test_suite_property in db. Proceed only if it succeeds
-                @report.destroy # Destroy the report and all the associated models if something goes wrong
-                render(failure_json) and return
-              end
-            end
-
-            testsuite[:junit_test_cases].each do |testcase| # Iterate through all the test_cases
-              junit_tc = junit_ts.junit_test_cases.new(testcase[:params])
-              unless junit_tc.save
-                @report.destroy # Destroy the report and all the associated models if something goes wrong
-                render(failure_json) and return
-              end
-            end
-
-          else
-            @report.destroy # Destroy the report and all the associated models if something goes wrong
-            render(failure_json) and return
-          end
-        end
-
-      else
-        @report.destroy
-        render(failure_json) and return
+    params[:upload].each do |upload_param|
+      if !write_junit_report_to_db(upload_param.tempfile)
+        failure_flag = true
+        break
       end
+    end
 
+    unless failure_flag
       render(success_json)
-    rescue Exception => e
-      @report.destroy # Destroy the report and all the associated models
-      render(failure_json) and return
     end
   end
 

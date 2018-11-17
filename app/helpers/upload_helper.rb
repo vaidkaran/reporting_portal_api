@@ -32,6 +32,58 @@ module UploadHelper
     @report = report
   end
 
+  def write_junit_report_to_db file
+    begin
+      report_data = parse_junit_xml(file)
+
+      if @create_junit_tsg
+        junit_tsg = JunitTestSuiteGroup.new(report_data[:junit_test_suite_group][:params])
+        @report.junit_test_suite_group = junit_tsg
+        if junit_tsg.save
+          @create_junit_tsg = false
+          @junit_tsg_saved = true
+          @junit_tsg = junit_tsg # assigned an instance var to make it retain the value the next time method is invoked
+        else
+          @report.destroy
+          render(failure_json) and return(false)
+        end
+      end
+
+      if @junit_tsg_saved # Save junit_test_suite_group in db. Proceed only if it succeeds
+
+        report_data[:junit_test_suite_group][:junit_test_suites].each do |testsuite| # Iterate through all the test_suites
+          junit_ts = @junit_tsg.junit_test_suites.new(testsuite[:params])
+          if junit_ts.save # Save junit_test_suite in db. Proceed only if it succeeds
+
+            testsuite[:junit_test_suite_properties].each do |property| # Iterate through all the test_suite_properties
+              junit_ts_prop = junit_ts.junit_test_suite_properties.new(property[:params])
+              unless junit_ts_prop.save # Save junit_test_suite_property in db. Proceed only if it succeeds
+                @report.destroy # Destroy the report and all the associated models if something goes wrong
+                render(failure_json) and return(false)
+              end
+            end
+
+            testsuite[:junit_test_cases].each do |testcase| # Iterate through all the test_cases
+              junit_tc = junit_ts.junit_test_cases.new(testcase[:params])
+              unless junit_tc.save
+                @report.destroy # Destroy the report and all the associated models if something goes wrong
+                render(failure_json) and return(false)
+              end
+            end
+
+          else
+            @report.destroy # Destroy the report and all the associated models if something goes wrong
+            render(failure_json) and return(false)
+          end
+        end
+
+      end
+    rescue Exception=>e
+      @report.destroy # Destroy the report and all the associated models
+      render(failure_json) and return(false)
+    end
+  end
+
   def success_json
     {json: {success: 'true', message: 'Report successfully uploaded'}}
   end
@@ -71,12 +123,13 @@ module UploadHelper
 
     doc = Nokogiri::XML(f)
 
-    testsuite_group = doc.xpath('/testsuites').first
-    report[:junit_test_suite_group][:params][:name]     = testsuite_group.attr('name')
-    report[:junit_test_suite_group][:params][:_errors]  = testsuite_group.attr('errors').to_i
-    report[:junit_test_suite_group][:params][:tests]    = testsuite_group.attr('tests').to_i
-    report[:junit_test_suite_group][:params][:failures] = testsuite_group.attr('failures').to_i
-    report[:junit_test_suite_group][:params][:time]     = testsuite_group.attr('time').to_i
+    if testsuite_group = doc.xpath('/testsuites').first
+      report[:junit_test_suite_group][:params][:name]     = testsuite_group.attr('name')
+      report[:junit_test_suite_group][:params][:_errors]  = testsuite_group.attr('errors').to_i
+      report[:junit_test_suite_group][:params][:tests]    = testsuite_group.attr('tests').to_i
+      report[:junit_test_suite_group][:params][:failures] = testsuite_group.attr('failures').to_i
+      report[:junit_test_suite_group][:params][:time]     = testsuite_group.attr('time').to_i
+    end
 
     testsuites = doc.xpath('//testsuite')
     testsuites.each do |testsuite|
